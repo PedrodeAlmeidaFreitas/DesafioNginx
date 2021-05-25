@@ -6,7 +6,7 @@ const People = function (people) {
 };
 
 People.getAll = result => {
-  sql.query("SELECT * FROM people", (err, res) => {
+  sql.query("SELECT * FROM people;", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -15,6 +15,16 @@ People.getAll = result => {
     result(null, getHtml(res));
   });
 };
+
+People.generatePeople = () => {
+  sql.query("INSERT INTO people(name) VALUE ('Pedro');", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+  });
+}
 
 const getHtml = (res) => {
   const people = ganeratePeopleTable(res);
@@ -43,15 +53,16 @@ const getHtml = (res) => {
         <th>Nome</th>
         <th>Criado em</th>
       </tr>
-      ${people}
+      ${people || ''}
     </table>
   `
 }
 
 const ganeratePeopleTable = (peopleResult) => {
-  if (!peopleResult) return;
+  if (peopleResult.length == 0) return;
+  console.log('Aqui ', peopleResult)
   const htmlObject = JSON.parse(JSON.stringify(peopleResult)).map(x => `<tr><td>${x.id}</td><td>${x.name}</td><td>${x.created_at}</td></tr>`)
-  return htmlObject.reduce((x, y) => x+y)
+  return htmlObject.reduce((x, y) => x + y)
 }
 
 module.exports = People;

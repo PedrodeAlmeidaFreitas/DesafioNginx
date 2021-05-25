@@ -11,3 +11,14 @@ exports.findAll = (req, res) => {
     else res.send(data);
   });
 };
+
+exports.generate = (req, res) => {
+  People.generatePeople((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving People."
+      });
+  });
+};
+
