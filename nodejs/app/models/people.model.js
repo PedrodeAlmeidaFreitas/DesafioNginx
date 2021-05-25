@@ -26,6 +26,21 @@ People.generatePeople = () => {
   });
 }
 
+People.createTable = () => {
+  console.log('Create Table')
+  sql.query(`CREATE TABLE IF NOT EXISTS people (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )  ENGINE=INNODB;`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+  });
+}
+
 const getHtml = (res) => {
   const people = ganeratePeopleTable(res);
   return `<style>
